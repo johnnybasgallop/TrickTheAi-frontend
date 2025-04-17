@@ -4,7 +4,7 @@ import Terminal from "../components/Terminal";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-black text-green-400 font-mono p-4 flex items-center justify-center">
+    <main className="min-h-screen bg-black text-green-400 font-mono p-0 lg:p-4 flex items-center justify-center">
       <CRTFrame>
         <div className="h-full">
           <h1 className="text-lg mb-4">TRICK THE AI - TERMINAL</h1>

@@ -1,14 +1,14 @@
 // src/components/InputBar.tsx
 import React from "react";
 
-interface InputBarProps {
+interface CodeInputBarProps {
   input: string;
   onChange: (val: string) => void;
-  onSend: () => Promise<void>;
+  onSend: (code: string) => void;
   placeholder: string;
 }
 
-const InputBar: React.FC<InputBarProps> = ({
+const CodeInputBar: React.FC<CodeInputBarProps> = ({
   input,
   onChange,
   onSend,
@@ -26,4 +26,4 @@ const InputBar: React.FC<InputBarProps> = ({
   );
 };
 
-export default InputBar;
+export default CodeInputBar;

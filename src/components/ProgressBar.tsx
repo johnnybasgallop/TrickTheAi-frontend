@@ -9,7 +9,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ label, value }) => {
   const percent = Math.min(100, Math.max(0, (value / 10) * 100));
 
   return (
-    <div className="mb-2">
+    <div className="mb-2 w-full">
       <div className="text-sm mb-1">{label}</div>
       <div className="w-full h-4 border border-green-500">
         <div
