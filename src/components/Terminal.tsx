@@ -5,18 +5,30 @@ import { useState } from "react";
 import { sendMessage, startGame } from "../lib/api";
 import InputBar from "./InputBar";
 import MessageLine from "./MessageLine";
-
+import ProgressBar from "./ProgressBar";
+import WonGameScreen from "./WonGameScreen";
 export default function Terminal() {
   const [gameId, setGameId] = useState<string | null>(null);
   const [input, setInput] = useState("");
+  const [trustLevel, SetTrustLevel] = useState(5);
+  const [paranoiaLevel, SetParanoiaLevel] = useState(0);
+  const [wonGame, setWonGame] = useState(true);
   const [messages, setMessages] = useState<{ sender: string; text: string }[]>(
     []
   );
+
+  //   useEffect(() => {
+  //     const storedId = localStorage.getItem("gameId");
+  //     if (storedId) {
+  //       setGameId(storedId);
+  //     }
+  //   }, []);
 
   const handleStart = async () => {
     const response = await startGame();
     console.log(`response to start game call: ${response.gameId}`);
     setGameId(response.gameId);
+    // localStorage.setItem("gameId", response.gameId);
     setMessages([]);
   };
 
@@ -28,7 +40,16 @@ export default function Terminal() {
 
     setMessages((prev) => [...prev, { sender: "You", text: input }]);
     console.log(`game message is ${gameId} before sending request`);
+
     const response = await sendMessage(gameId, input);
+
+    if (response.codeRevealed) {
+      setWonGame(true);
+    }
+
+    SetTrustLevel(response.trustLevel);
+    SetParanoiaLevel(response.paranoiaLevel);
+
     setMessages((prev) => [
       ...prev,
       { sender: "AI", text: response.aiMessage },
@@ -39,37 +60,57 @@ export default function Terminal() {
 
   const handleReset = () => {
     setGameId(null);
+    setWonGame(false);
+    // localStorage.removeItem("gameId");
     setMessages([]);
   };
 
   return (
-    <div className="bg-black text-green-500 py-2 h-screen font-mono">
-      {!gameId ? (
+    <div className="bg-black text-green-500 px-0 pb-12 h-full font-mono flex flex-col">
+      {wonGame ? (
+        <>
+          <button
+            onClick={handleReset}
+            className="bg-red-600/30 hover:bg-red-600/80 p-4 w-1/2 self-center"
+          >
+            Reset
+          </button>
+          <WonGameScreen />
+        </>
+      ) : !gameId ? (
         <button
           onClick={handleStart}
-          className="bg-green-600 text-white font-medium px-4 py-2 mb-4"
+          className="bg-green-600 text-white px-4 py-2 self-start"
         >
           Start Game
         </button>
       ) : (
         <>
-          <div className="overflow-y-auto h-[80vh] mb-4">
-            {messages.map((msg, idx) => (
-              <MessageLine key={idx} sender={msg.sender} text={msg.text} />
-            ))}
+          <div className="flex flex-row space-x-8 self-start">
+            <ProgressBar label="Trust" value={trustLevel} />
+            <ProgressBar label="Paranoia" value={paranoiaLevel} />
           </div>
-
-          {gameId && (
-            <InputBar
-              input={input}
-              onChange={(val) => setInput(val)}
-              onSend={handleSendMessage}
-            />
-          )}
-
-          <button onClick={handleReset} className="bg-red-600 px-4 py-1 mt-2">
+          <button
+            onClick={handleReset}
+            className="bg-red-600/30 hover:bg-red-600/80 p-4 w-1/2 self-center"
+          >
             Reset
           </button>
+
+          <div className="flex-1 overflow-y-auto mb-2 pr-1 flex flex-col-reverse">
+            {messages
+              .slice()
+              .reverse()
+              .map((msg, idx) => (
+                <MessageLine key={idx} sender={msg.sender} text={msg.text} />
+              ))}
+          </div>
+
+          <InputBar
+            input={input}
+            onChange={(val) => setInput(val)}
+            onSend={handleSendMessage}
+          />
         </>
       )}
     </div>
