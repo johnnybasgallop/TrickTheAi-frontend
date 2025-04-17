@@ -113,13 +113,14 @@ export default function Terminal() {
 
       {wonGame ? (
         <>
+          <WonGameScreen />
+
           <button
             onClick={handleReset}
-            className="border-2 border-red-600 hover:bg-red-600/80 hover:text-white text-red-600 px-4 py-2 lg:py-3 mt-4  w-full lg:w-1/2"
+            className="border-2 border-red-600 hover:bg-red-600/80 hover:text-white text-red-600 px-4 py-2 lg:py-3 self-center mb-10 w-full lg:w-1/2"
           >
             Reset
           </button>
-          <WonGameScreen />
         </>
       ) : !gameId ? (
         <StartGameScreen onStart={handleStart} />
@@ -130,7 +131,7 @@ export default function Terminal() {
             <div className="w-full flex flex-row justify-between items-center">
               <h1 className="text-lg mb-4">TRICK THE AI - TERMINAL</h1>
               <CountdownTimer
-                seconds={5}
+                seconds={120}
                 onExpire={() => {
                   setIsModalVisible(true);
                 }}
