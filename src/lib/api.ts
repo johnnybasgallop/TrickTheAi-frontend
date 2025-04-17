@@ -17,5 +17,7 @@ export async function sendMessage(gameId: string, message: string) {
     body: JSON.stringify({ gameId, message }),
   });
 
-  return res.json();
+  let response = res.json();
+  console.log(response);
+  return response;
 }

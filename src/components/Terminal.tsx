@@ -13,18 +13,10 @@ export default function Terminal() {
     []
   );
 
-  //   useEffect(() => {
-  //     const storedId = localStorage.getItem("gameId");
-  //     if (storedId) {
-  //       setGameId(storedId);
-  //     }
-  //   }, []);
-
   const handleStart = async () => {
     const response = await startGame();
     console.log(`response to start game call: ${response.gameId}`);
     setGameId(response.gameId);
-    // localStorage.setItem("gameId", response.gameId);
     setMessages([]);
   };
 
@@ -47,16 +39,16 @@ export default function Terminal() {
 
   const handleReset = () => {
     setGameId(null);
-    // localStorage.removeItem("gameId");
     setMessages([]);
   };
 
   return (
-    <div className="bg-black text-green-500 p-4 h-screen font-mono">
-      <h1 className="text-lg mb-2">💣 Trick the AI Terminal</h1>
-
+    <div className="bg-black text-green-500 py-2 h-screen font-mono">
       {!gameId ? (
-        <button onClick={handleStart} className="bg-green-600 px-4 py-2 mb-4">
+        <button
+          onClick={handleStart}
+          className="bg-green-600 text-white font-medium px-4 py-2 mb-4"
+        >
           Start Game
         </button>
       ) : (

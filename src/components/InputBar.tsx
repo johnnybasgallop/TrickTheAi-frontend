@@ -11,7 +11,7 @@ const InputBar: React.FC<InputBarProps> = ({ input, onChange, onSend }) => {
   return (
     <div>
       <input
-        className="w-full bg-black border border-green-500 p-2 mb-2"
+        className="w-full bg-black border border-green-500 p-2 mb-2 ring-transparent focus:outline-none"
         value={input}
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={(e) => e.key === "Enter" && onSend()}
