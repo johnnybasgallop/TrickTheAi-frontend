@@ -1,11 +1,10 @@
-// src/components/CountdownTimer.tsx
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface CountdownTimerProps {
   seconds: number;
-  onExpire?: any;
+  onExpire?: () => void;
 }
 
 const CountdownTimer: React.FC<CountdownTimerProps> = ({
@@ -13,19 +12,33 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
   onExpire,
 }) => {
   const [timeLeft, setTimeLeft] = useState(seconds);
+  const endTimeRef = useRef<number>(Date.now() + seconds * 1000);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    if (timeLeft <= 0) {
-      onExpire?.();
-      return;
-    }
+    const updateTimer = () => {
+      const now = Date.now();
+      const remaining = Math.max(
+        0,
+        Math.floor((endTimeRef.current - now) / 1000)
+      );
+      setTimeLeft(remaining);
+      if (remaining === 0 && intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+        onExpire?.();
+      }
+    };
 
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => prev - 1);
-    }, 1000);
+    intervalRef.current = setInterval(updateTimer, 1000);
+    updateTimer(); // Initial call to set the correct time immediately
 
-    return () => clearInterval(timer);
-  }, [timeLeft, onExpire]);
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [onExpire]);
 
   const formatTime = (secs: number) => {
     const m = Math.floor(secs / 60)
