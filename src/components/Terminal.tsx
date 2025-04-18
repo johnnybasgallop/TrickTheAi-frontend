@@ -21,6 +21,7 @@ export default function Terminal() {
   const [messages, setMessages] = useState<{ sender: string; text: string }[]>(
     []
   );
+  const [isInvalid, setIsInvalid] = useState(false);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -54,11 +55,17 @@ export default function Terminal() {
 
   const handleEnterCode = (code: string) => {
     if (code == gameId) {
+      setIsInvalid(false);
       setWonGame(true);
       SetTrustLevel(5);
       SetParanoiaLevel(0);
       setCodeInput("");
     } else {
+      setIsInvalid(true);
+      setTimeout(() => {
+        setCodeInput("");
+        setIsInvalid(false);
+      }, 500);
       setCodeInput("");
     }
   };
@@ -147,6 +154,8 @@ export default function Terminal() {
                   input={codeInput}
                   onChange={(val) => setCodeInput(val)}
                   onSend={handleEnterCode}
+                  gameId={codeInput}
+                  isInvalid={isInvalid}
                   placeholder="Enter The Code.."
                 />
 
