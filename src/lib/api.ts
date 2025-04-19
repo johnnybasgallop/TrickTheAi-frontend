@@ -40,3 +40,20 @@ export async function changeDifficulty(gameId: string, gameMode: string) {
 
   return response;
 }
+
+export async function deleteGame(gameId: string) {
+  console.log(`deleting game with id ${gameId}`);
+
+  const res = await fetch("http://localhost:8080/game/delete", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ gameId }),
+  });
+
+  const response = res.json();
+  console.log(`response status: ${response}`);
+
+  return response;
+}

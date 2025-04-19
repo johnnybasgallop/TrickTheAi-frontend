@@ -2,7 +2,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { changeDifficulty, sendMessage, startGame } from "../lib/api";
+import {
+  changeDifficulty,
+  deleteGame,
+  sendMessage,
+  startGame,
+} from "../lib/api";
 import CodeInputBar from "./CodeInput";
 import CountdownTimer from "./CountdownTimer";
 import explosionGif from "./explosion-gif";
@@ -30,11 +35,12 @@ export default function Terminal() {
 
   useEffect(() => {
     if (isModalVisible) {
-      const timeout = setTimeout(() => {
-        setIsModalVisible(false);
-        setGameId(null);
-        SetParanoiaLevel(0);
-        SetTrustLevel(5);
+      const timeout = setTimeout(async () => {
+        // setIsModalVisible(false);
+
+        // SetParanoiaLevel(0);
+        // SetTrustLevel(5);
+        await handleReset();
       }, 5500); // 5 seconds
 
       return () => clearTimeout(timeout); // Cleanup
@@ -47,6 +53,14 @@ export default function Terminal() {
   //       setGameId(storedId);
   //     }
   //   }, []);
+
+  const handleDeleteCurrentGame = async () => {
+    if (gameId) {
+      const response = await deleteGame(gameId);
+    } else {
+      console.log("no active gameid state to delete with");
+    }
+  };
 
   const handleStart = async () => {
     const response = await startGame();
@@ -104,11 +118,13 @@ export default function Terminal() {
     ]);
   };
 
-  const handleReset = () => {
+  const handleReset = async () => {
+    await handleDeleteCurrentGame();
     setGameId(null);
     setWonGame(false);
     SetTrustLevel(5);
     SetParanoiaLevel(0);
+    setIsModalVisible(false);
     // localStorage.removeItem("gameId");
     setMessages([]);
   };
