@@ -2,15 +2,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { sendMessage, startGame } from "../lib/api";
+import { changeDifficulty, sendMessage, startGame } from "../lib/api";
 import CodeInputBar from "./CodeInput";
 import CountdownTimer from "./CountdownTimer";
+import explosionGif from "./explosion-gif";
 import InputBar from "./InputBar";
 import MessageLine from "./MessageLine";
 import ProgressBar from "./ProgressBar";
+import SelectGameMode from "./SelectGameMode";
 import StartGameScreen from "./StartGameScreen";
 import WonGameScreen from "./WonGameScreen";
-import explosionGif from "./explosion-gif";
 export default function Terminal() {
   const [gameId, setGameId] = useState<string | null>(null);
   const [input, setInput] = useState("");
@@ -24,6 +25,8 @@ export default function Terminal() {
   const [isInvalid, setIsInvalid] = useState(false);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isSelectingGameMode, setIsSelectingGameMode] = useState(false);
+  const [gameMode, setGameMode] = useState("Easy");
 
   useEffect(() => {
     if (isModalVisible) {
@@ -51,6 +54,16 @@ export default function Terminal() {
     setGameId(response.gameId);
     // localStorage.setItem("gameId", response.gameId);
     setMessages([]);
+    setIsSelectingGameMode(true);
+  };
+
+  const handleChangeDifficulty = async () => {
+    if (gameMode && gameId) {
+      const response = await changeDifficulty(gameId, gameMode);
+      console.log(`response to game mode change ${response}`);
+      setGameMode(response.gameMode);
+      setIsSelectingGameMode(false);
+    }
   };
 
   const handleEnterCode = (code: string) => {
@@ -118,7 +131,13 @@ export default function Terminal() {
         </div>
       )}
 
-      {wonGame ? (
+      {isSelectingGameMode ? (
+        <SelectGameMode
+          onSubmit={handleChangeDifficulty}
+          onSelect={(val: string) => setGameMode(val)}
+          gameMode={gameMode}
+        />
+      ) : wonGame ? (
         <>
           <WonGameScreen />
 
@@ -130,7 +149,10 @@ export default function Terminal() {
           </button>
         </>
       ) : !gameId ? (
-        <StartGameScreen onStart={handleStart} />
+        <>
+          <StartGameScreen onStart={handleStart} />
+          {/* <SelectGameMode /> */}
+        </>
       ) : (
         gameId &&
         !isModalVisible && (

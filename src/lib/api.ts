@@ -21,3 +21,22 @@ export async function sendMessage(gameId: string, message: string) {
   console.log(response);
   return response;
 }
+
+export async function changeDifficulty(gameId: string, gameMode: string) {
+  console.log(
+    `attempting to change difficulty to ${gameMode} for gameid: ${gameId}`
+  );
+
+  const res = await fetch("http://localhost:8080/game/difficulty", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ gameId, gameMode }),
+  });
+
+  let response = res.json();
+  console.log(`response to game mode change: ${response}`);
+
+  return response;
+}
