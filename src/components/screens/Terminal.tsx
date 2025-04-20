@@ -125,46 +125,42 @@ export default function Terminal() {
     setMessages([]);
   };
 
-  const introLines =
-    "Despite your efforts, the AI remained unconvinced. The trust never reached high enough, and paranoia consumed the system. The launch codes remain hidden… for now. But the window has closed — the world wasn’t saved. Better luck next time, Commander.";
-
   return (
     <div className="bg-black text-green-500 px-0 pb-2 h-full w-full font-mono flex flex-col">
+      {/* Show game over screen */}
       {isGameOver && <GameOverScreen />}
 
-      {isSelectingGameMode ? (
+      {/* Show Starting screen to start the game */}
+      {!gameId && !isGameOver && <StartGameScreen onStart={handleStart} />}
+
+      {/* Show the game mode select */}
+      {isSelectingGameMode && !isGameOver && gameId && (
         <SelectGameMode
           onSubmit={handleChangeDifficulty}
           onSelect={(val: string) => setGameMode(val)}
           gameMode={gameMode}
         />
-      ) : wonGame ? (
-        <WonGameScreen resestFunc={handleReset} />
-      ) : !gameId ? (
-        <>
-          <StartGameScreen onStart={handleStart} />
-          {/* <SelectGameMode /> */}
-        </>
-      ) : (
-        gameId &&
-        !isGameOver && (
-          <>
-            <ActiveGameScreen
-              trustLevel={trustLevel}
-              paranoiaLevel={paranoiaLevel}
-              codeInput={codeInput}
-              input={input}
-              messages={messages}
-              isInvalid={isInvalid}
-              onCodeChange={(val) => setCodeInput(val)}
-              onCodeSubmit={handleEnterCode}
-              onInputChange={(val) => setInput(val)}
-              onSendMessage={handleSendMessage}
-              onAbort={handleReset}
-              onExpire={() => setIsGameOver(true)}
-            />
-          </>
-        )
+      )}
+
+      {/* Show the won game screen */}
+      {wonGame && !isGameOver && <WonGameScreen resestFunc={handleReset} />}
+
+      {/* Show the play screen */}
+      {gameId && !isGameOver && !isSelectingGameMode && !wonGame && (
+        <ActiveGameScreen
+          trustLevel={trustLevel}
+          paranoiaLevel={paranoiaLevel}
+          codeInput={codeInput}
+          input={input}
+          messages={messages}
+          isInvalid={isInvalid}
+          onCodeChange={setCodeInput}
+          onCodeSubmit={handleEnterCode}
+          onInputChange={setInput}
+          onSendMessage={handleSendMessage}
+          onAbort={handleReset}
+          onExpire={() => setIsGameOver(true)}
+        />
       )}
     </div>
   );
