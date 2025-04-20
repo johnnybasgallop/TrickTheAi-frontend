@@ -1,4 +1,3 @@
-// lib/api.ts
 export async function startGame() {
   const res = await fetch("http://localhost:8080/game/start", {
     method: "POST",

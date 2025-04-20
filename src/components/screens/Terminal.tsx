@@ -2,18 +2,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import explosionGif from "../../../public/explosion-gif";
 import {
   changeDifficulty,
   deleteGame,
   sendMessage,
   startGame,
 } from "../../lib/api";
-import CodeInputBar from "../ui/CodeInput";
-import CountdownTimer from "../ui/CountdownTimer";
-import InputBar from "../ui/InputBar";
-import MessageLine from "../ui/MessageLine";
-import ProgressBar from "../ui/ProgressBar";
+import ActiveGameScreen from "./ActiveGameScreen";
+import GameOverScreen from "./GameOverScreen";
 import SelectGameMode from "./SelectGameMode";
 import StartGameScreen from "./StartGameScreen";
 import WonGameScreen from "./WonGameScreen";
@@ -29,14 +25,14 @@ export default function Terminal() {
   );
   const [isInvalid, setIsInvalid] = useState(false);
 
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isGameOver, setIsGameOver] = useState(false);
   const [isSelectingGameMode, setIsSelectingGameMode] = useState(false);
   const [gameMode, setGameMode] = useState("Easy");
 
   useEffect(() => {
-    if (isModalVisible) {
+    if (isGameOver) {
       const timeout = setTimeout(async () => {
-        // setIsModalVisible(false);
+        // setIsGameOver(false);
 
         // SetParanoiaLevel(0);
         // SetTrustLevel(5);
@@ -45,7 +41,7 @@ export default function Terminal() {
 
       return () => clearTimeout(timeout); // Cleanup
     }
-  }, [isModalVisible]);
+  }, [isGameOver]);
 
   //   useEffect(() => {
   //     const storedId = localStorage.getItem("gameId");
@@ -124,7 +120,7 @@ export default function Terminal() {
     setWonGame(false);
     SetTrustLevel(5);
     SetParanoiaLevel(0);
-    setIsModalVisible(false);
+    setIsGameOver(false);
     // localStorage.removeItem("gameId");
     setMessages([]);
   };
@@ -134,18 +130,7 @@ export default function Terminal() {
 
   return (
     <div className="bg-black text-green-500 px-0 pb-2 h-full w-full font-mono flex flex-col">
-      {isModalVisible && (
-        <div className="flex flex-col w-full h-full">
-          <p className="text-red-400/40 animate-pulse text-[100px] md:text-[180px] text-center self-center">
-            GAME OVER
-          </p>
-          <img
-            className="w-full h-full"
-            src={explosionGif}
-            alt="explosion gif"
-          />
-        </div>
-      )}
+      {isGameOver && <GameOverScreen />}
 
       {isSelectingGameMode ? (
         <SelectGameMode
@@ -154,16 +139,7 @@ export default function Terminal() {
           gameMode={gameMode}
         />
       ) : wonGame ? (
-        <>
-          <WonGameScreen />
-
-          <button
-            onClick={handleReset}
-            className="border-2 border-red-600 hover:bg-red-600/80 hover:text-white text-red-600 px-4 py-2 lg:py-3 self-center mb-10 w-full lg:w-1/2"
-          >
-            Reset
-          </button>
-        </>
+        <WonGameScreen resestFunc={handleReset} />
       ) : !gameId ? (
         <>
           <StartGameScreen onStart={handleStart} />
@@ -171,61 +147,21 @@ export default function Terminal() {
         </>
       ) : (
         gameId &&
-        !isModalVisible && (
+        !isGameOver && (
           <>
-            <h1 className="text-lg mb-4">TRICK THE AI - TERMINAL</h1>
-            <div className="w-full flex flex-row justify-between items-center">
-              <CountdownTimer
-                seconds={10}
-                onExpire={() => {
-                  setIsModalVisible(true);
-                }}
-              />
-            </div>
-            <div className="flex flex-row space-x-8 self-start w-full lg:w-2/3">
-              <ProgressBar label="Trust" value={trustLevel} />
-              <ProgressBar label="Paranoia" value={paranoiaLevel} />
-            </div>
-            <div className="w-full lg:w-1/3 flex flex-col">
-              <div className="w-full flex flex-row space-x-4">
-                <CodeInputBar
-                  input={codeInput}
-                  onChange={(val) => setCodeInput(val)}
-                  onSend={handleEnterCode}
-                  gameId={codeInput}
-                  isInvalid={isInvalid}
-                  placeholder="Enter The Code.."
-                />
-
-                <button
-                  onClick={() => handleEnterCode(codeInput)}
-                  className="border-2 border-green-600 hover:bg-green-600/80 hover:text-white text-sm w-2/3 lg:w-1/3 lg:text-medium h-[80%] self-center"
-                >
-                  Enter Code
-                </button>
-              </div>
-              <button
-                onClick={handleReset}
-                className="border-2 border-red-600 hover:bg-red-600/80 hover:text-white text-red-600 px-4 py-2 lg:py-3 mt-4  w-full lg:w-1/2"
-              >
-                Abort Mission
-              </button>
-            </div>
-
-            <div className="flex-1 overflow-y-auto mb-2 pr-1 flex flex-col-reverse">
-              {messages
-                .slice()
-                .reverse()
-                .map((msg, idx) => (
-                  <MessageLine key={idx} sender={msg.sender} text={msg.text} />
-                ))}
-            </div>
-
-            <InputBar
+            <ActiveGameScreen
+              trustLevel={trustLevel}
+              paranoiaLevel={paranoiaLevel}
+              codeInput={codeInput}
               input={input}
-              onChange={(val) => setInput(val)}
-              onSend={handleSendMessage}
-              placeholder="Type your message then press ↵"
+              messages={messages}
+              isInvalid={isInvalid}
+              onCodeChange={(val) => setCodeInput(val)}
+              onCodeSubmit={handleEnterCode}
+              onInputChange={(val) => setInput(val)}
+              onSendMessage={handleSendMessage}
+              onAbort={handleReset}
+              onExpire={() => setIsGameOver(true)}
             />
           </>
         )

@@ -8,7 +8,7 @@ interface MessageLineProps {
 
 const MessageLine: React.FC<MessageLineProps> = ({ sender, text }) => {
   return (
-    <div className="py-1">
+    <div className="py-1 text-sm md:text-md lg:text-lg">
       <span
         className={`${sender == "You" ? "text-green-400" : "text-blue-300"}`}
       >
