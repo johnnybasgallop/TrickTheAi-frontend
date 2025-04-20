@@ -136,7 +136,7 @@ export default function Terminal() {
     <div className="bg-black text-green-500 px-0 pb-2 h-full w-full font-mono flex flex-col">
       {isModalVisible && (
         <div className="flex flex-col w-full h-full">
-          <p className="text-red-400/40 animate-pulse text-[180px] text-center self-center">
+          <p className="text-red-400/40 animate-pulse text-[100px] md:text-[180px] text-center self-center">
             GAME OVER
           </p>
           <img

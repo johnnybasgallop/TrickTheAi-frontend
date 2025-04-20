@@ -4,7 +4,11 @@ interface props {
   gameMode: string;
 }
 
-const SelectGameMode: React.FC<props> = ({ onSubmit, onSelect, gameMode }) => {
+const SelectGameMode: React.FC<props> = ({
+  onSubmit,
+  onSelect,
+  gameMode = "Easy",
+}) => {
   return (
     <div className="h-full w-full flex flex-col items-center text-center justify-center space-y-30 md:space-x-8 py-6">
       <p className="text-lg font-semibold mb-20 md:mb-6">
