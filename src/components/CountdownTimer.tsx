@@ -49,7 +49,7 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
   };
 
   return (
-    <div className="font-mono text-green-500 border-2 border-green-500 px-4 py-2 animate-pulse self-end">
+    <div className="font-mono text-green-500 border-2 border-green-500 md:px-4 w-full py-2 items-center justify-center text-center md:w-1/4 mb-4 animate-pulse md:self-end">
       <span className="text-xs block mb-1">MISSION TIME REMAINING</span>
       <span className="text-2xl tracking-widest text-red-400">
         {formatTime(timeLeft)}

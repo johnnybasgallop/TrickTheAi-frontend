@@ -133,7 +133,7 @@ export default function Terminal() {
     "Despite your efforts, the AI remained unconvinced. The trust never reached high enough, and paranoia consumed the system. The launch codes remain hidden… for now. But the window has closed — the world wasn’t saved. Better luck next time, Commander.";
 
   return (
-    <div className="bg-black text-green-500 px-0 pb-12 h-full w-full font-mono flex flex-col">
+    <div className="bg-black text-green-500 px-0 pb-2 h-full w-full font-mono flex flex-col">
       {isModalVisible && (
         <div className="flex flex-col w-full h-full">
           <p className="text-red-400/40 animate-pulse text-[180px] text-center self-center">
