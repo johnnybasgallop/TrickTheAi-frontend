@@ -173,8 +173,8 @@ export default function Terminal() {
         gameId &&
         !isModalVisible && (
           <>
+            <h1 className="text-lg mb-4">TRICK THE AI - TERMINAL</h1>
             <div className="w-full flex flex-row justify-between items-center">
-              <h1 className="text-lg mb-4">TRICK THE AI - TERMINAL</h1>
               <CountdownTimer
                 seconds={300}
                 onExpire={() => {
