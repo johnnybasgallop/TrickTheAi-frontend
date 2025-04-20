@@ -1,6 +1,6 @@
 // src/app/page.tsx
-import CRTFrame from "@/components/CRTFrame";
-import Terminal from "../components/Terminal";
+import CRTFrame from "@/components/ui/CRTFrame";
+import Terminal from "../components/screens/Terminal";
 
 export default function Home() {
   return (

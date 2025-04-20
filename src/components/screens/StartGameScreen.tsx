@@ -3,7 +3,7 @@
 
 import useTypewriter from "@/hooks/useTypewriter";
 import React from "react";
-import Typewriter from "./TypeWriter";
+import Typewriter from "../utility/TypeWriter";
 
 interface Props {
   onStart: () => void;

@@ -2,18 +2,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import explosionGif from "../../../public/explosion-gif";
 import {
   changeDifficulty,
   deleteGame,
   sendMessage,
   startGame,
-} from "../lib/api";
-import CodeInputBar from "./CodeInput";
-import CountdownTimer from "./CountdownTimer";
-import explosionGif from "./explosion-gif";
-import InputBar from "./InputBar";
-import MessageLine from "./MessageLine";
-import ProgressBar from "./ProgressBar";
+} from "../../lib/api";
+import CodeInputBar from "../ui/CodeInput";
+import CountdownTimer from "../ui/CountdownTimer";
+import InputBar from "../ui/InputBar";
+import MessageLine from "../ui/MessageLine";
+import ProgressBar from "../ui/ProgressBar";
 import SelectGameMode from "./SelectGameMode";
 import StartGameScreen from "./StartGameScreen";
 import WonGameScreen from "./WonGameScreen";
@@ -176,7 +176,7 @@ export default function Terminal() {
             <h1 className="text-lg mb-4">TRICK THE AI - TERMINAL</h1>
             <div className="w-full flex flex-row justify-between items-center">
               <CountdownTimer
-                seconds={300}
+                seconds={10}
                 onExpire={() => {
                   setIsModalVisible(true);
                 }}
