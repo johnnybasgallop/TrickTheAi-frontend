@@ -6,8 +6,8 @@ interface props {
 
 const SelectGameMode: React.FC<props> = ({ onSubmit, onSelect, gameMode }) => {
   return (
-    <div className="h-full w-full flex flex-col items-center text-center justify-center md:space-x-8 py-6">
-      <p className="text-lg font-semibold mb-6">
+    <div className="h-full w-full flex flex-col items-center text-center justify-center space-y-30 md:space-x-8 py-6">
+      <p className="text-lg font-semibold mb-20 md:mb-6">
         Please select your Game Difficulty
       </p>
       <div className="w-full md:flex md:flex-row items-start justify-center space-x-4 space-y-4 md:space-x-8 md:space-y-0 pt-4">
