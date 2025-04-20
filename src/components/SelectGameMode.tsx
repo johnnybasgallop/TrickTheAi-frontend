@@ -8,7 +8,7 @@ const SelectGameMode: React.FC<props> = ({ onSubmit, onSelect, gameMode }) => {
   return (
     <div className="h-full w-full flex flex-col items-center justify-center space-x-8 py-6">
       <p className="text-lg font-semibold mb-6">
-        Please select your Game Difficulty...
+        Please select your Game Difficulty
       </p>
       <div className="w-full flex flex-row items-start justify-center space-x-8 pt-4">
         <button

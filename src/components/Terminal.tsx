@@ -176,7 +176,7 @@ export default function Terminal() {
             <div className="w-full flex flex-row justify-between items-center">
               <h1 className="text-lg mb-4">TRICK THE AI - TERMINAL</h1>
               <CountdownTimer
-                seconds={180}
+                seconds={300}
                 onExpire={() => {
                   setIsModalVisible(true);
                 }}

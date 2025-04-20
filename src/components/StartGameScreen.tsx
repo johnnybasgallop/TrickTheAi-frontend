@@ -16,11 +16,11 @@ const StartGameScreen: React.FC<Props> = ({ onStart }) => {
   const displayText = useTypewriter(introLines, 25);
 
   return (
-    <div className="flex flex-col items-start space-y-1 text-sm leading-relaxed text-green-500 whitespace-pre">
-      <Typewriter text={introLines} speed={30} />
+    <div className="flex flex-col w-full h-full items-center justify-center text-center space-y-1 text-sm leading-relaxed text-green-500 whitespace-pre">
+      <Typewriter text={introLines} speed={45} />
       <button
         onClick={onStart}
-        className="bg-green-600 text-white px-4 py-2 mt-4 animate-pulse"
+        className="bg-green-600 text-white w-1/3 py-3 mt-20 animate-pulse"
       >
         Start Game
       </button>

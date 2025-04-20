@@ -1,22 +1,28 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const useTypewriter = (text: string, speed = 50) => {
   const [displayText, setDisplayText] = useState("");
+  const indexRef = useRef(0);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    let i = 0;
-    const typingInterval = setInterval(() => {
-      if (i < text.length) {
-        setDisplayText((prevText) => prevText + text.charAt(i));
-        i++;
-      } else {
-        clearInterval(typingInterval);
+    indexRef.current = 0;
+
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+
+    intervalRef.current = setInterval(() => {
+      indexRef.current += 1;
+      const next = text.slice(0, indexRef.current);
+      setDisplayText(next);
+
+      if (indexRef.current >= text.length) {
+        clearInterval(intervalRef.current!);
       }
     }, speed);
 
-    return () => {
-      clearInterval(typingInterval);
-    };
+    return () => clearInterval(intervalRef.current!);
   }, [text, speed]);
 
   return displayText;

@@ -9,7 +9,7 @@ interface props {
 const Typewriter: React.FC<props> = ({ text, speed }) => {
   const displayText = useTypewriter(text, speed);
 
-  return <p className="text-left text-sm text-green-500">{displayText}</p>;
+  return <p className="text-lg text-green-500">{displayText}</p>;
 };
 
 export default Typewriter;
